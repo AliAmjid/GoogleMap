@@ -1,0 +1,25 @@
+{
+	"name": "aliamjid/GoogleMap",
+	"description": "GoogleMaps integration to PHP / Nette framework",
+	"type": "library",
+	"license": "MIT",
+	"keywords": [
+		"nette-image-control",
+		"nette-forms-image-extension",
+		"php-jquery-image-resize-library"
+	],
+	"authors": [
+		{
+			"name": "Ali Amjid",
+			"email": "aamjid@artex-is.cz"
+		}
+	],
+	"require": {
+		"nette/forms": "^2.2"
+	},
+	"autoload": {
+		"classmap": ["src/"]
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
+}
