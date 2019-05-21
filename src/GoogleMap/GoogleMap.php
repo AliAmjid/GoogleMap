@@ -5,7 +5,7 @@ use aliamjid\GoogleMap\Objects\Config;
 use aliamjid\GoogleMap\Objects\Group;
 use aliamjid\GoogleMap\Objects\Point;
 use Nette\Application\UI\Control;
-use Nette\Forms\Form;
+use Nette\Application\UI\Form;
 
 abstract class GoogleMap  extends Control implements IGoogleMap {
 	/** @var string */
@@ -20,6 +20,7 @@ abstract class GoogleMap  extends Control implements IGoogleMap {
 	public function __construct($apiKey) {
 		$this->apiKey = $apiKey;
 		$this->config = new Config();
+		$this->filterGroups = array();
 	}
 
 	public function render() {
@@ -32,7 +33,8 @@ abstract class GoogleMap  extends Control implements IGoogleMap {
 	}
 
 	protected function addFilterGroup(Group  $group) {
-		$this->groups[] = $group;
+		$this->filterGroups[] = $group;
+		return $this;
 	}
 
 	protected function addPoint(Point $point) {
@@ -50,11 +52,12 @@ abstract class GoogleMap  extends Control implements IGoogleMap {
 				$form->addCheckbox($filter->name);
 			}
 		}
-		$form->onValidate[] = array($this,'filterFormSubmitted');
 		$form->addSubmit('submit');
+		$form->onValidate[] = array($this, 'filterFormSubmitted');
+		return $form;
 	}
 
-	public function filterFormSubmitted() {
+	public function filterFormSubmitted($form) {
 		$this->definePoints();
 		$this->presenter->sendJson((array)$this->points);
 	}

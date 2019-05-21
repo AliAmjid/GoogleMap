@@ -9,9 +9,9 @@ class Filter {
 	public $trueValue;
 	public $underlineColor;
 
-	public function __construct($name,$displayedName,$dataRelation,$trueValue,$underlineColor = 'ffffff') {
+	public function __construct($name, $displayedName, $dataRelation, $trueValue, $underlineColor = 'ffffff') {
 		$this->name = $name;
-		$this->dataRelation = $da;
+		$this->dataRelation = $dataRelation;
 		$this->trueValue = $trueValue;
 		$underlineColor = $underlineColor;
 	}

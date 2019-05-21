@@ -10,12 +10,12 @@
 	<br>
 	<div id="map"></div>
 
-	<div class="col-lg-12" style="display: none">
+	<div class="col-lg-12" >
 		<div class="box">
 			<div class="box-header">
 				<br>
 				<br>
-				{form filterForm class => 'ajax'}
+				{form filterForm class => 'ajax google-map-form'}
 				{foreach $filters as $group}
 					<div>
 						<h4><input type="checkbox" class="checkbox-controler"> {$group->name}</h4>
