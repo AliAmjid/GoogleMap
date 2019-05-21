@@ -1,5 +1,5 @@
 {
-	"name": "aliamjid/GoogleMap",
+	"name": "aliamjid/google-map",
 	"description": "GoogleMaps integration to PHP / Nette framework",
 	"type": "library",
 	"license": "MIT",
