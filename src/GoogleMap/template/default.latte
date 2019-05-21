@@ -1,0 +1,39 @@
+<div class="google-map-wrapper">
+	<div class="google-map-loader" id="loader">
+		<div class="loader">
+			<br>
+			<img src="{$baseUrl}/images/ajax-loader.gif"/>
+			<p>Načítám mapu</p>
+		</div>
+		<br>
+	</div>
+	<br>
+	<div id="map"></div>
+
+	<div class="col-lg-12" style="display: none">
+		<div class="box">
+			<div class="box-header">
+				<br>
+				<br>
+				{form filterForm class => 'ajax'}
+				{foreach $filters as $group}
+					<div>
+						<h4><input type="checkbox" class="checkbox-controler"> {$group->name}</h4>
+						<div>
+							{foreach $group->filters as $filter}
+								<div class="checkbox" style="display:inline-block;">
+									<label>{input $filter->name class=>'map-checkbox'} <span
+												  style="border-bottom: solid 2px #{$filter->underlineColor};">{$filter->displayedName}</span></label>
+								</div>
+							{/foreach}
+						</div>
+					</div>
+				{/foreach}
+				{input submit class=>'btn map-submit'}
+				{/form}
+			</div>
+		</div>
+	</div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key={$apiKey}"></script>
+<script> var filtersConfig = {(array)$filters}; </script>
