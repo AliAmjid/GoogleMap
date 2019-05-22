@@ -52,7 +52,6 @@ abstract class GoogleMap  extends Control implements IGoogleMap {
 				$form->addCheckbox($filter->name);
 			}
 		}
-		$form->addSubmit('submit');
 		$form->onValidate[] = array($this, 'filterFormSubmitted');
 		return $form;
 	}

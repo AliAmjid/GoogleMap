@@ -22,16 +22,26 @@ class Point {
 	/** @var string */
 	public $nameRedirect;
 
-	/** @var \stdClass */
+	/** @var array */
 	public $data;
 
-	public function __construct($name, $lat, $lng, $icon, $nameRedirect, $data,$additonalComment) {
+	/** @var string */
+	public $address;
+
+	public function __construct($name, $lat, $lng, $icon, $nameRedirect = '',$address,$additonalComment = '') {
 		$this->name = $name;
 		$this->lat = $lat;
 		$this->lng = $lng;
 		$this->icon = $icon;
 		$this->nameRedirect = $nameRedirect;
-		$this->data = $data;
 		$this->additonalComment = $additonalComment;
+		$this->address = $address;
 	}
+
+	public function addDataRelation($key,$value) {
+		$this->data[$key] = $value;
+		return $this;
+	}
+
+
 }

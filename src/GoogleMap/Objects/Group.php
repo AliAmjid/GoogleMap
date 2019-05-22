@@ -15,8 +15,8 @@ class Group {
 		$this->name = $name;
 	}
 
-	public function addFilter($name,$dataRelation,$trueValue,$underlineColor = 'ffffff') {
-		$this->filters[] = new Filter($name,$dataRelation,$trueValue,$underlineColor);
+	public function addFilter($name, $displayedName, $dataRelation, $trueValue, $underlineColor = 'ffffff') {
+		$this->filters[] = new Filter($name, $displayedName, $dataRelation, $trueValue, $underlineColor);
 		return $this;
 	}
 

@@ -1,11 +1,16 @@
 var GoogleMapHandler = function () {
-	$.nette.init();
 	var data;
 	var map;
 	var markers = [];
-	this.initMap = function () {
-		this.handleSubmitButton();
+	this.init = function () {
+		try {
+			$.nette.init();
+		} catch (e) {
 
+		}
+		var _this = this;
+		this.handleSubmitButton();
+		this.handleBasicBehaviorOfFilters();
 		var center = {lat: 50.083433, lng: 14.420596};
 		map = new google.maps.Map(document.getElementById('map'), {
 			center: center,
@@ -14,17 +19,39 @@ var GoogleMapHandler = function () {
 		});
 
 		$('.google-map-form').submit();
-
 		$.nette.ext('.google-map-form', {
 			success: function (data) {
-				console.log(data);
+				_this.data = data;
+				_this.createPoints(map, data);
 			}
 		});
 	};
 
 	this.handleSubmitButton = function () {
+		var _this = this;
 		$('.map-submit').click(function (e) {
 			e.preventDefault();
+			var dataForRender = [];
+			var applyedFilters = _this.getApplyedFilterParams();
+			_this.data.forEach(function (point) {
+				var votesForAdding = 0;
+				Object.keys(applyedFilters).forEach(function (key) {
+					var pointShoudBeAddedByInnerGroupFilter = false;
+					applyedFilters[key].forEach(function (filter) {
+						if (_this.isPointValidWithFilter(filter, point)) {
+							pointShoudBeAddedByInnerGroupFilter = true;
+						}
+					});
+					if (pointShoudBeAddedByInnerGroupFilter) {
+						votesForAdding++;
+					}
+				});
+				if (votesForAdding >= Object.keys(applyedFilters).length) {
+					dataForRender.push(point);
+				}
+			});
+			_this.deletePoints();
+			_this.createPoints(map, dataForRender);
 		});
 	};
 	this.createPoints = function (map, data) {
@@ -39,20 +66,16 @@ var GoogleMapHandler = function () {
 		var infowindow = new google.maps.InfoWindow();
 		for (var i = 0; i < data.length; i++) {
 			var item = data[i];
-			console.log(item);
 			var icon = {
-				url: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + item['letter'] + '|' + item['color']
+				url: item.icon.src
 			};
-			var specialHtml;
-			if (typeof item['additionalComment'] !== 'undefined') {
-				specialHtml = item['additionalComment']
-			}
+			var specialHtml = item.additonalComment;
 			contentString[i] = '<div id="content">' +
 				'<div id="siteNotice">' +
 				'</div>' +
-				'<h2 id="firstHeading" class="firstHeading">' + item['name'] + '</h2>' +
+				'<a href="' + item.nameRedirect + '"><h2 id="firstHeading" class="firstHeading">' + item.name + '</h2></a>' +
 				'<div id="bodyContent">' +
-				'<p>Adresa: ' + item['address'] + '</p>' +
+				'<p>Adresa: ' + item.address + '</p>' +
 				'<a href="' + "https://www.google.com/maps/dir/?api=1&destination=" + item['lat'] + "," + item['lng'] + "&travelmode=driving" + '" target="_blank" >Zobrazit cestu k zákazníkovi</a></div>' + specialHtml;
 			var marker = new google.maps.Marker({
 				map: map,
@@ -76,11 +99,13 @@ var GoogleMapHandler = function () {
 		}
 
 	};
+
 	this.deletePoints = function () {
 		for (var i = 0; i < markers.length; i++) {
 			markers[i].setMap(null);
 		}
 	};
+
 	this.showMap = function () {
 		var map = document.getElementById("map");
 		map.style.height = "600px";
@@ -92,8 +117,7 @@ var GoogleMapHandler = function () {
 
 	this.handleBasicBehaviorOfFilters = function () {
 		$('.checkbox-controler').click(function () {
-			console.log('changeed');
-			if($(this).is(':checked')) {
+			if ($(this).is(':checked')) {
 				$(this).parent().next().find('input').prop("checked", true);
 			} else {
 				$(this).parent().next().find('input').prop("checked", false);
@@ -101,12 +125,40 @@ var GoogleMapHandler = function () {
 			}
 		});
 	};
+
+	this.getApplyedFilterParams = function () {
+		var applyedFilters = [];
+		filtersConfig.forEach(function (group) {
+			group.filters.forEach(function (filter) {
+				if ($('#frm-googleMap-filterForm-' + filter.name).is(':checked')) {
+					try {
+						applyedFilters[filter.dataRelation].push(filter);
+					} catch (e) {
+						applyedFilters[filter.dataRelation] = [];
+						applyedFilters[filter.dataRelation].push(filter);
+					}
+
+				}
+			})
+		});
+		return applyedFilters;
+	};
+
+	this.isPointValidWithFilter = function (filter, point) {
+		var pointParamValue = point.data[filter.dataRelation];
+		if (pointParamValue == null) {
+			return false;
+		}
+		if (pointParamValue == filter.trueValue) {
+			return true;
+		}
+		return false;
+	}
 };
 
 $(document).ready(function () {
-	console.log(filtersConfig);
-	var GHP = new GoogleMapHandler();
-	GHP.initMap();
-	GHP.showMap();
-	GHP.handleBasicBehaviorOfFilters();
+	if ($('.google-map-wrapper').length) {
+		var GHP = new GoogleMapHandler();
+		GHP.init();
+	}
 });

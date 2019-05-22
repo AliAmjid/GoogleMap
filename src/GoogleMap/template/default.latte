@@ -23,14 +23,14 @@
 							{foreach $group->filters as $filter}
 								<div class="checkbox" style="display:inline-block;">
 									<label>{input $filter->name class=>'map-checkbox'} <span
-												  style="border-bottom: solid 2px #{$filter->underlineColor};">{$filter->displayedName}</span></label>
+												  style="border-bottom: solid 2px #{$filter->underlineColor|noescape};">{$filter->displayedName}</span></label>
 								</div>
 							{/foreach}
 						</div>
 					</div>
 				{/foreach}
-				{input submit class=>'btn map-submit'}
 				{/form}
+				<button class="btn map-submit">Filtrovat</button>
 			</div>
 		</div>
 	</div>

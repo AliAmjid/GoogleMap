@@ -11,8 +11,9 @@ class Filter {
 
 	public function __construct($name, $displayedName, $dataRelation, $trueValue, $underlineColor = 'ffffff') {
 		$this->name = $name;
+		$this->displayedName = $displayedName;
 		$this->dataRelation = $dataRelation;
 		$this->trueValue = $trueValue;
-		$underlineColor = $underlineColor;
+		$this->underlineColor = $underlineColor;
 	}
 }
