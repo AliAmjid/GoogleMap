@@ -1,3 +1,4 @@
+
 # aliamjid\google-map
 
 
@@ -14,7 +15,7 @@ How it can look like?
 ------------------------
 ![enter image description here](https://i.imgur.com/cOU2vUf.jpg)
 
-Example of Nette Component
+Example of full nette Component
 -------------------------------------------
 
 ```php
@@ -117,3 +118,62 @@ And than you just render it template
 {control customerMap}
 ```
 And your map is ready.
+
+Description of methods & classes
+=================================
+
+After you extend you class by **aliamjid\GoogleMap\GoogleMap** you need to define 3 compulsory methods
+
+ - DefineConfig()
+ - DefinePoints()
+ - DefineFilters()
+
+Define config
+-----------------
+This method isnt that important you can leave it empty. But its for defining of basic map configuration. You can **set map height,** or you can **hide filters**, if you dont need them. 
+
+Example:
+```php
+public function defineConfig() {  
+  $config = new Config();  
+  $config->showFilters = false;  
+  $config->mapHeight = 600;
+  //You need to set config
+  $this->setConfig($config);  
+}
+```
+Define points
+-------------------------
+This is important one. 
+You are defining points on map here. You need to give an lat & lng to point, give a icon and define description of point
+
+So you start by creating an Point. You will do it like this
+
+   ```php
+   $point = new vendor/aliamjid/google-
+  map/src/GoogleMap/Objects/Point(
+$name, $lat, $lng, $icon, $nameRedirect = '',$address,$additonalComment = ''
+);
+ ```
+ $lat & $lng are Cords of point
+ 
+ ![enter image description here](https://i.ibb.co/TvMM68M/describe-map.png)
+
+**How to set icons color and symbol ?**
+You can use pre-created class
+
+    GoogleMap/Objects/DropMarkerIcon
+    
+    $icon = new DropMarkerIcon($symbol,$color);
+   If you would like to create own icon you can do it like this: 
+
+   ```php
+   class MyCustomeIcon extends aliamjid\GoogleMap\Objects\Icon {  
+  
+  public $src;  
+  public function __construct() {  
+  $this->src = "link/to/icon.png";  
+ }}
+ ```
+ 
+ 
