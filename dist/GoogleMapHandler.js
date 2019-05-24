@@ -12,7 +12,7 @@ var GoogleMapHandler = function () {
 		this.handleSubmitButton();
 		this.handleBasicBehaviorOfFilters();
 		var center = {lat: 50.083433, lng: 14.420596};
-		map = new google.maps.Map(document.getElementById('map'), {
+		map = new google.maps.Map(document.getElementById('aa-map'), {
 			center: center,
 			zoom: 7.4,
 			maxZoom: 15
@@ -108,7 +108,8 @@ var GoogleMapHandler = function () {
 	};
 
 	this.showMap = function () {
-		var map = document.getElementById("map");
+		var map = document.getElementById("aa-map");
+		console.log(map);
 		map.style.height = "600px";
 		map.style.width = "100%";
 		if (document.getElementById("loader")) {
