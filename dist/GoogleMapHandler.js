@@ -109,7 +109,6 @@ var GoogleMapHandler = function () {
 
 	this.showMap = function () {
 		var map = document.getElementById("aa-map");
-		console.log(map);
 		map.style.height = "600px";
 		map.style.width = "100%";
 		if (document.getElementById("loader")) {
