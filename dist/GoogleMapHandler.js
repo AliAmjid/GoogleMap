@@ -6,7 +6,6 @@ var GoogleMapHandler = function () {
 		try {
 			$.nette.init();
 		} catch (e) {
-
 		}
 		var _this = this;
 		this.handleSubmitButton();
@@ -17,7 +16,6 @@ var GoogleMapHandler = function () {
 			zoom: 7.4,
 			maxZoom: 15
 		});
-
 		$('.google-map-form').submit();
 		$.nette.ext('.google-map-form', {
 			success: function (data) {
@@ -27,7 +25,6 @@ var GoogleMapHandler = function () {
 			}
 		});
 	};
-
 	this.handleSubmitButton = function () {
 		var _this = this;
 		$('.map-submit').click(function (e) {
@@ -61,7 +58,6 @@ var GoogleMapHandler = function () {
 		} catch (e) {
 			var data = data;
 		}
-
 		var contentString = [];
 		var bounds = new google.maps.LatLngBounds();
 		var infowindow = new google.maps.InfoWindow();
@@ -98,15 +94,12 @@ var GoogleMapHandler = function () {
 			map.fitBounds(bounds);
 			map.panToBounds(bounds);
 		}
-
 	};
-
 	this.deletePoints = function () {
 		for (var i = 0; i < markers.length; i++) {
 			markers[i].setMap(null);
 		}
 	};
-
 	this.showMap = function () {
 		var map = document.getElementById("aa-map");
 		map.style.height = "600px";
@@ -115,36 +108,31 @@ var GoogleMapHandler = function () {
 			document.getElementById("loader").style.display = "none";
 		}
 	};
-
 	this.handleBasicBehaviorOfFilters = function () {
 		$('.checkbox-controler').click(function () {
 			if ($(this).is(':checked')) {
 				$(this).parent().next().find('input').prop("checked", true);
 			} else {
 				$(this).parent().next().find('input').prop("checked", false);
-
 			}
 		});
 	};
-
 	this.getApplyedFilterParams = function () {
 		var applyedFilters = [];
 		filtersConfig.forEach(function (group) {
 			group.filters.forEach(function (filter) {
-				if ($('#frm-googleMap-filterForm-' + filter.name).is(':checked')) {
+				if ($('.google-map-form').find('input[name='+filter.name+']').is(':checked')) {
 					try {
 						applyedFilters[filter.dataRelation].push(filter);
 					} catch (e) {
 						applyedFilters[filter.dataRelation] = [];
 						applyedFilters[filter.dataRelation].push(filter);
 					}
-
 				}
 			})
 		});
 		return applyedFilters;
 	};
-
 	this.isPointValidWithFilter = function (filter, point) {
 		var pointParamValue = point.data[filter.dataRelation];
 		if (pointParamValue == null) {
@@ -156,7 +144,6 @@ var GoogleMapHandler = function () {
 		return false;
 	}
 };
-
 $(document).ready(function () {
 	if ($('.google-map-wrapper').length) {
 		var GHP = new GoogleMapHandler();
