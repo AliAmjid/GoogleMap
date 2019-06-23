@@ -2,6 +2,8 @@ var GoogleMapHandler = function () {
 	var data;
 	var map;
 	var markers = [];
+	var lastClickedTime = 10000;
+
 	this.init = function () {
 		try {
 			$.nette.init();
@@ -29,29 +31,50 @@ var GoogleMapHandler = function () {
 		var _this = this;
 		$('.map-submit').click(function (e) {
 			e.preventDefault();
-			var dataForRender = [];
-			var applyedFilters = _this.getApplyedFilterParams();
-			_this.data.forEach(function (point) {
-				var votesForAdding = 0;
-				Object.keys(applyedFilters).forEach(function (key) {
-					var pointShoudBeAddedByInnerGroupFilter = false;
-					applyedFilters[key].forEach(function (filter) {
-						if (_this.isPointValidWithFilter(filter, point)) {
-							pointShoudBeAddedByInnerGroupFilter = true;
-						}
-					});
-					if (pointShoudBeAddedByInnerGroupFilter) {
-						votesForAdding++;
+			_this.fireFilterProcess();
+		});
+
+		$('.google-map-form').find('label').click(function () {
+			if($('#aa-map-autofilter').is(':checked')) {
+				lastClickedTime = 0;
+			}
+		});
+
+		setInterval(function () {
+			lastClickedTime += 100;
+			if(lastClickedTime == 600 ) {
+				_this.fireFilterProcess();
+			}
+		},100);
+	};
+
+	this.fireFilterProcess = function () {
+		var _this = this;
+
+		var dataForRender = [];
+		var applyedFilters = _this.getApplyedFilterParams();
+		_this.data.forEach(function (point) {
+			var votesForAdding = 0;
+			Object.keys(applyedFilters).forEach(function (key) {
+				var pointShoudBeAddedByInnerGroupFilter = false;
+				applyedFilters[key].forEach(function (filter) {
+					if (_this.isPointValidWithFilter(filter, point)) {
+						pointShoudBeAddedByInnerGroupFilter = true;
 					}
 				});
-				if (votesForAdding >= Object.keys(applyedFilters).length) {
-					dataForRender.push(point);
+				if (pointShoudBeAddedByInnerGroupFilter) {
+					votesForAdding++;
 				}
 			});
-			_this.deletePoints();
-			_this.createPoints(map, dataForRender);
+			if (votesForAdding >= Object.keys(applyedFilters).length) {
+				dataForRender.push(point);
+			}
 		});
+		_this.deletePoints();
+		_this.createPoints(map, dataForRender);
 	};
+
+
 	this.createPoints = function (map, data) {
 		try {
 			var data = JSON.parse(data);
