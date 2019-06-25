@@ -132,11 +132,14 @@ var GoogleMapHandler = function () {
 		}
 	};
 	this.handleBasicBehaviorOfFilters = function () {
-		$('.checkbox-controler').click(function () {
-			if ($(this).is(':checked')) {
-				$(this).parent().next().find('input').prop("checked", true);
+		$('.group-controller').click(function () {
+			var checkbox = $(this).find('input');
+			if (checkbox.is(':checked')) {
+				checkbox.prop('checked', false);
+				checkbox.parent().next().find('input').prop("checked", false);
 			} else {
-				$(this).parent().next().find('input').prop("checked", false);
+				checkbox.prop('checked', true);
+				checkbox.parent().next().find('input').prop("checked", true);
 			}
 		});
 	};
